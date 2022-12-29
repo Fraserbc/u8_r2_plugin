@@ -154,6 +154,8 @@ int u8_decode_opcode(const ut8 *buf, int len, struct u8_cmd *cmd)
 			return -1;
 
 		s_word = r_read_at_le16(buf, i*2);	// read second (possibly third) word from stream
+
+		cmd->s_word = s_word;
 		i++;
 	}
 

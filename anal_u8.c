@@ -266,6 +266,7 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 		
 		// Branch instructions
 		case U8_B_AD:
+			op->jump = (cmd.op1 * 0x10000) + cmd.s_word;
 			op->type = R_ANAL_OP_TYPE_JMP; break;
 		case U8_BL_AD:
 			// simulate segment register
