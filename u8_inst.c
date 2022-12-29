@@ -161,7 +161,7 @@ u8inst_t u8inst[U8_INS_NUM] =
 	{.id=U8_BGE_RAD, .name="bge", .len=1, .ops=1, .flags=0b000000, .ins=0xc000, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
 	{.id=U8_BLT_RAD, .name="blt", .len=1, .ops=1, .flags=0b000000, .ins=0xc100, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
 	{.id=U8_BGT_RAD, .name="bgt", .len=1, .ops=1, .flags=0b000000, .ins=0xc200, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
-	{.id=U8_BLE_RAD, .name="ble", .len=1, .ops=1, .flags=0b000000, .ins=0xc130, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
+	{.id=U8_BLE_RAD, .name="ble", .len=1, .ops=1, .flags=0b000000, .ins=0xc300, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
 	{.id=U8_BGES_RAD, .name="bges", .len=1, .ops=1, .flags=0b000000, .ins=0xc400, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
 	{.id=U8_BLTS_RAD, .name="blts", .len=1, .ops=1, .flags=0b000000, .ins=0xc500, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
 	{.id=U8_BGTS_RAD, .name="bgts", .len=1, .ops=1, .flags=0b000000, .ins=0xc600, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
