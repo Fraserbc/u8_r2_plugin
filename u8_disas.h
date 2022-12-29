@@ -198,6 +198,8 @@ int u8_decode_inst(ut16 inst);
 // Branch instructions
 #define U8_B_AD			144
 #define U8_B_ER			145
+
+// Branch link instructions
 #define U8_BL_AD		146
 #define U8_BL_ER		147
 

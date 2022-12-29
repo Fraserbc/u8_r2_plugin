@@ -29,6 +29,10 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 
 	ret = op->size = u8_decode_opcode(buf, len, &cmd);
 
+	// Set command mnemonic
+	op->mnemonic = malloc(snprintf(NULL, 0, "%s %s", cmd.instr, cmd.operands));
+	sprintf(op->mnemonic, "%s %s", cmd.instr, cmd.operands);
+
 	if(ret < 0)
 		return ret;
 
@@ -259,14 +263,16 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 			op->type = R_ANAL_OP_TYPE_SWI; break;
 		case U8_BRK:
 			op->type = R_ANAL_OP_TYPE_TRAP; break;
+		
 		// Branch instructions
 		case U8_B_AD:
-			op->type = R_ANAL_OP_TYPE_CALL; break;
+			op->type = R_ANAL_OP_TYPE_JMP; break;
 		case U8_BL_AD:
 			// simulate segment register
 			op->jump = (cmd.op1 * 0x10000) + cmd.s_word;
 			op->type = R_ANAL_OP_TYPE_CALL; break;
 		case U8_B_ER:
+			op->type = R_ANAL_OP_TYPE_RJMP; break;
 		case U8_BL_ER:
 			op->type = R_ANAL_OP_TYPE_RCALL; break;
 
@@ -355,7 +361,8 @@ struct r_anal_plugin_t r_anal_plugin_u8 =
 	.desc = "nX-U8/100 analysis plugin",
 	.license = "LGPL3",
 	.arch = "u8",
-	.bits = 8 | 16,
+	.bits = 16,
+	.endian = R_SYS_ENDIAN_BIG,
 	.anal_mask = u8_anal_mask,
 	.op = &u8_anop,
 };
