@@ -15,7 +15,7 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 {
 	int ret;
 	struct u8_cmd cmd;
-
+	memset (&cmd, '\0', sizeof(struct u8_cmd));
 	memset (op, '\0', sizeof(RAnalOp));
 	op->size = -1;
 	op->addr = addr;
