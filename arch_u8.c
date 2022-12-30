@@ -300,6 +300,31 @@ static bool decode_u8(RArchSession *s, RAnalOp *op, RArchDecodeMask mask) {
 	return op->size;
 }
 
+static char *regs(RArchSession *as) {
+	const char *const p =
+		"=PC	pc\n"
+		"=SP	sp\n"
+		"=A0	y\n"
+		"=A1	y\n"
+		"gpr	a	.8	0	0\n"
+		"gpr	x	.8	1	0\n"
+		"gpr	y	.8	2	0\n"
+
+		"gpr	flags	.8	3	0\n"
+		"gpr	C	.1	.24	0\n"
+		"gpr	Z	.1	.25	0\n"
+		"gpr	I	.1	.26	0\n"
+		"gpr	D	.1	.27	0\n"
+		// bit 4 (.28) is NOT a real flag.
+		// "gpr	B	.1	.28	0\n"
+		// bit 5 (.29) is not used
+		"gpr	V	.1	.30	0\n"
+		"gpr	N	.1	.31	0\n"
+		"gpr	sp	.8	4	0\n"
+		"gpr	pc	.16	5	0\n";
+	return strdup (p);
+}
+
 RArchPlugin r_arch_plugin_u8 = {
 	.name = "u8",
 	.desc = "nX-U8/100 analysis plugin",
@@ -307,7 +332,8 @@ RArchPlugin r_arch_plugin_u8 = {
 	.arch = "u8",
 	.bits = 16,
 	.endian = R_SYS_ENDIAN_LITTLE,
-	.decode = &decode_u8
+	.decode = &decode_u8,
+	.regs = &regs
 };
 
 #ifndef R2_PLUGIN_INCORE
