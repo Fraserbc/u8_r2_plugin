@@ -13,8 +13,8 @@ ANAL_LDFLAGS=-shared $(shell pkg-config --libs r_anal)
 
 ANAL_OBJS=anal_u8.o u8_inst.o u8_disas.o
 
-R2_PLUGIN_PATH=$(shell r2 -H R2_USER_PLUGINS)
-LIBEXT=$(shell r2 -H LIBEXT)
+R2_PLUGIN_PATH="/home/fraser/.local/share/radare2/plugins"#$(shell r2 -H R2_USER_PLUGINS)
+LIBEXT="so"#$(shell r2 -H LIBEXT)
 ANAL_LIB=anal_u8.$(LIBEXT)
 
 all: $(ANAL_LIB) install

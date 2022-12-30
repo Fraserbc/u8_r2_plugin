@@ -30,7 +30,7 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 	ret = op->size = u8_decode_opcode(buf, len, &cmd);
 
 	// Set command mnemonic
-	op->mnemonic = malloc(snprintf(NULL, 0, "%s %s", cmd.instr, cmd.operands));
+	op->mnemonic = malloc(snprintf(NULL, 0, "%s %s", cmd.instr, cmd.operands)+1);
 	sprintf(op->mnemonic, "%s %s", cmd.instr, cmd.operands);
 
 	if(ret < 0)
