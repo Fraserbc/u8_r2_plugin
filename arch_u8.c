@@ -1,21 +1,18 @@
-/* radare nX-U8/100 analysis plugin - LGPL - Copyright 2020 - cetus9 */
-
-#include <string.h>
-#include <r_types.h>
 #include <r_lib.h>
 #include <r_asm.h>
-#include <r_anal.h>
+#include <r_arch.h>
 
 #include "u8_disas.h"
 
-// u8inst[U8_INS_NUM] contains instruction data
+static bool decode_u8(RArchSession *s, RAnalOp *op, RArchDecodeMask mask) {
+	ut64 addr = op->addr;
+	ut8 *buf = op->bytes;
+	int len = op->size;
 
-// analyse opcodes
-static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len, RAnalOpMask mask)
-{
 	int ret;
 	struct u8_cmd cmd;
 	memset (&cmd, '\0', sizeof(struct u8_cmd));
+	
 	memset (op, '\0', sizeof(RAnalOp));
 	op->size = -1;
 	op->addr = addr;
@@ -30,8 +27,7 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 	ret = op->size = u8_decode_opcode(buf, len, &cmd);
 
 	// Set command mnemonic
-	op->mnemonic = malloc(snprintf(NULL, 0, "%s %s", cmd.instr, cmd.operands)+1);
-	sprintf(op->mnemonic, "%s %s", cmd.instr, cmd.operands);
+	op->mnemonic = r_str_newf("%s %s", cmd.instr, cmd.operands);
 
 	if(ret < 0)
 		return ret;
@@ -304,75 +300,20 @@ static int u8_anop(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len,
 	return op->size;
 }
 
-// generate mask for signature matching
-// FIXME: some extra thought here would improve matching accuracy
-static ut8 *u8_anal_mask(RAnal *anal, int size, const ut8 *data, ut64 at)
-{
-	RAnalOp *op = NULL;
-	ut8 *ret = NULL;
-	int i;
-	struct u8_cmd cmd;
-
-	if(!data)
-	{
-		return NULL;
-	}
-
-	if(!(op = r_anal_op_new()))
-	{
-		return NULL;
-	}
-
-	// mask array = length of function
-	if(!(ret = malloc(size)))
-	{
-		r_anal_op_free(op);
-		return NULL;
-	}
-
-	memset(ret, 0xff, size);
-
-	for(i=0; i+1<size; i+=op->size)
-	{
-		op->size = u8_decode_opcode(data, size, &cmd);
-
-		if(op->size < 2)
-		{
-			break;
-		}
-
-		if(op->size == 4)	// second word of 2 word instruction is always data
-		{
-			ret[i + 2] = 0;
-			ret[i + 3] = 0;
-		}
-
-		ret[i] = u8inst[cmd.type].ins_mask;
-		ret[i + 1] = u8inst[cmd.type].ins_mask >> 8;
-	}
-
-	r_anal_op_free (op);
-
-	return ret;
-}
-
-struct r_anal_plugin_t r_anal_plugin_u8 =
-{
+RArchPlugin r_arch_plugin_u8 = {
 	.name = "u8",
 	.desc = "nX-U8/100 analysis plugin",
 	.license = "LGPL3",
 	.arch = "u8",
 	.bits = 16,
 	.endian = R_SYS_ENDIAN_LITTLE,
-	.anal_mask = u8_anal_mask,
-	.op = &u8_anop,
+	.decode = &decode_u8
 };
 
 #ifndef R2_PLUGIN_INCORE
-R_API RLibStruct radare_plugin =
-{
-	.type = R_LIB_TYPE_ANAL,
-	.data = &r_anal_plugin_u8,
+R_API RLibStruct radare_plugin = {
+	.type = R_LIB_TYPE_ARCH,
+	.data = &r_arch_plugin_u8,
 	.version = R2_VERSION
 };
 #endif
