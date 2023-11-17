@@ -247,39 +247,39 @@ int u8_decode_opcode(const ut8 *buf, int len, struct u8_cmd *cmd)
 			break;
 		case U8_L_ER_D16_ER:
 		case U8_ST_ER_D16_ER:
-			fmt_op_str("er%d, %04xh[er%d]", op1, s_word, op2);
+			fmt_op_str("er%d, %s%04xh[er%d]", op1, prefix_str, s_word, op2);
 			break;
 		case U8_L_ER_D6_BP:
 		case U8_ST_ER_D6_BP:
 			if(isneg_6bit(op2))
-				fmt_op_str("er%d, -%xh[bp]", op1, abs_6bit(op2));
+				fmt_op_str("er%d, %s-%xh[bp]", op1, prefix_str, abs_6bit(op2));
 			else
-				fmt_op_str("er%d, %xh[bp]", op1, abs_6bit(op2));
+				fmt_op_str("er%d, %s%xh[bp]", op1, prefix_str, abs_6bit(op2));
 			break;
 		case U8_L_ER_D6_FP:
 		case U8_ST_ER_D6_FP:
 			if(isneg_6bit(op2))
-				fmt_op_str("er%d, -%xh[fp]", op1, abs_6bit(op2));
+				fmt_op_str("er%d, %s-%xh[fp]", op1, prefix_str, abs_6bit(op2));
 			else
-				fmt_op_str("er%d, %xh[fp]", op1, abs_6bit(op2));
+				fmt_op_str("er%d, %s%xh[fp]", op1, prefix_str, abs_6bit(op2));
 			break;
 		case U8_L_ER_DA:
 		case U8_ST_ER_DA:
-			fmt_op_str("er%d, %04xh", op1, s_word);
+			fmt_op_str("er%d, %s%04xh", op1, prefix_str, s_word);
 			break;
 
 		// Register load/store instructions
 		case U8_L_R_EA:
 		case U8_ST_R_EA:
-			fmt_op_str("r%d, [ea]", op1);
+			fmt_op_str("r%d, %s[ea]", op1, prefix_str);
 			break;
 		case U8_L_R_EAP:
 		case U8_ST_R_EAP:
-			fmt_op_str("r%d, [ea+]", op1);
+			fmt_op_str("r%d, %s[ea+]", op1, prefix_str);
 			break;
 		case U8_L_R_ER:
 		case U8_ST_R_ER:
-			fmt_op_str("r%d, [er%d]", op1, op2);
+			fmt_op_str("r%d, %s[er%d]", op1, prefix_str, op2);
 			break;
 		case U8_L_R_D16_ER:
 		case U8_ST_R_D16_ER:
@@ -324,7 +324,8 @@ int u8_decode_opcode(const ut8 *buf, int len, struct u8_cmd *cmd)
 
 		// Control register access instructions
 		case U8_ADD_SP_O:
-			fmt_op_str("sp, #%xh", op1);
+			signed char op = op1;
+			fmt_op_str("sp, #%c%xh", (op<0) ? '-' : '\0', abs(op));
 			break;
 		case U8_MOV_ECSR_R:
 			fmt_op_str("ecsr, r%d", op1);

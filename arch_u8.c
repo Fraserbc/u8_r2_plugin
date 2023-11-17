@@ -20,7 +20,6 @@ static bool decode_u8(RArchSession *s, RAnalOp *op, RArchDecodeMask mask) {
 	op->family = R_ANAL_OP_FAMILY_CPU;
 	op->stackop = R_ANAL_STACK_NULL;
 	op->jump = op->fail = -1;
-	op->addr = addr;
 	op->ptr = op->val = -1;
 	op->refptr = 0;
 
@@ -304,24 +303,58 @@ static char *regs(RArchSession *as) {
 	const char *const p =
 		"=PC	pc\n"
 		"=SP	sp\n"
-		"=A0	y\n"
-		"=A1	y\n"
-		"gpr	a	.8	0	0\n"
-		"gpr	x	.8	1	0\n"
-		"gpr	y	.8	2	0\n"
+		"=BP    er12\n"
+		"=LR    lr\n"
+		"=A0    er0\n"
+		"=SN    r0\n"	// Doesn't have syscalls but this stops r2 screaming
 
-		"gpr	flags	.8	3	0\n"
-		"gpr	C	.1	.24	0\n"
-		"gpr	Z	.1	.25	0\n"
-		"gpr	I	.1	.26	0\n"
-		"gpr	D	.1	.27	0\n"
-		// bit 4 (.28) is NOT a real flag.
-		// "gpr	B	.1	.28	0\n"
-		// bit 5 (.29) is not used
-		"gpr	V	.1	.30	0\n"
-		"gpr	N	.1	.31	0\n"
-		"gpr	sp	.8	4	0\n"
-		"gpr	pc	.16	5	0\n";
+		// R0-R15
+		"gpr    r0    .8  0   0\n"
+		"gpr    r1    .8  1   0\n"
+		"gpr    r2    .8  2   0\n"
+		"gpr    r3    .8  3   0\n"
+		"gpr    r4    .8  4   0\n"
+		"gpr    r5    .8  5   0\n"
+		"gpr    r6    .8  6   0\n"
+		"gpr    r7    .8  7   0\n"
+		"gpr    r8    .8  8   0\n"
+		"gpr    r9    .8  9   0\n"
+		"gpr    r10   .8  10  0\n"
+		"gpr    r11   .8  11  0\n"
+		"gpr    r12   .8  12  0\n"
+		"gpr    r13   .8  13  0\n"
+		"gpr    r14   .8  14  0\n"
+		"gpr    r15   .8  15  0\n"
+
+		// ER0-ER14
+		"gpr    er0   .16 0   0\n"
+		"gpr    er2   .16 2   0\n"
+		"gpr    er4   .16 4   0\n"
+		"gpr    er6   .16 6   0\n"
+		"gpr    er8   .16 8   0\n"
+		"gpr    er10  .16 10  0\n"
+		"gpr    er12  .16 12  0\n"
+		"gpr    er14  .16 14  0\n"
+
+		// XR0-XR12
+		"gpr    xr0   .32 0   0\n"
+		"gpr    xr4   .32 4   0\n"
+		"gpr    xr8   .32 8   0\n"
+		"gpr    xr12  .32 12  0\n"
+
+		// QR0-QR8
+		"gpr    qr0   .64 0   0\n"
+		"gpr    qr8   .64 8   0\n"
+
+		// Control Registers
+		"gpr    pc    .16 16  0\n"
+		"gpr    sp    .16 18  0\n"
+		"gpr    ea    .16 20  0\n"
+		
+		"gpr    lr    .16 22  0\n"
+		"gpr    elr1  .16 24  0\n"
+		"gpr    elr2  .16 26  0\n"
+		"gpr    elr3  .16 28  0\n";
 	return strdup (p);
 }
 

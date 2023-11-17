@@ -90,7 +90,7 @@ u8inst_t u8inst[U8_INS_NUM] =
 	{.id=U8_MOV_ER_ELR, .name="mov", .len=1, .ops=1, .flags=0b000000, .ins=0xa005, .ins_mask=0xf1ff, .op1_mask=0x0f00, .op2_mask=0x0000},
 	{.id=U8_MOV_ER_SP, .name="mov", .len=1, .ops=1, .flags=0b000000, .ins=0xa01a, .ins_mask=0xf1ff, .op1_mask=0x0f00, .op2_mask=0x0000},
 	{.id=U8_MOV_PSW_R, .name="mov", .len=1, .ops=1, .flags=0b111111, .ins=0xa00b, .ins_mask=0xff0f, .op1_mask=0x00f0, .op2_mask=0x0000},
-	{.id=U8_MOV_PSW_O, .name="mov", .len=1, .ops=1, .flags=0b111111, .ins=0xa00b, .ins_mask=0xff0f, .op1_mask=0x00f0, .op2_mask=0x0000},
+	{.id=U8_MOV_PSW_O, .name="mov", .len=1, .ops=1, .flags=0b111111, .ins=0xe900, .ins_mask=0xff00, .op1_mask=0x00ff, .op2_mask=0x0000},
 	{.id=U8_MOV_R_ECSR, .name="mov", .len=1, .ops=1, .flags=0b000000, .ins=0xa007, .ins_mask=0xf0ff, .op1_mask=0x0f00, .op2_mask=0x0000},
 	{.id=U8_MOV_R_EPSW, .name="mov", .len=1, .ops=1, .flags=0b000000, .ins=0xa004, .ins_mask=0xf0ff, .op1_mask=0x0f00, .op2_mask=0x0000},
 	{.id=U8_MOV_R_PSW, .name="mov", .len=1, .ops=1, .flags=0b000000, .ins=0xa003, .ins_mask=0xf0ff, .op1_mask=0x0f00, .op2_mask=0x0000},
