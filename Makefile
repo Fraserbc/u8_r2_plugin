@@ -22,7 +22,7 @@ clean:
 	rm -f $(ARCH_LIB) $(ARCH_OBJS)
 
 $(ARCH_LIB): $(ARCH_OBJS)
-	$(CC) $(CFLAGS) $(ARCH_LDFLAGS) $(ARCH_OBJS) -o $(ARCH_LIB)
+	$(CC) $(CFLAGS) -o $(ARCH_LIB) $(ARCH_OBJS) $(ARCH_LDFLAGS)
 
 install:
 	cp -f arch_u8.$(LIBEXT) $(R2_PLUGIN_PATH)
