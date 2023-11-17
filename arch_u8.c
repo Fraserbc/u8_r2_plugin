@@ -306,6 +306,7 @@ static char *regs(RArchSession *as) {
 		"=SP	sp\n"
 		"=A0	y\n"
 		"=A1	y\n"
+		"=SN	r0\n"
 		"gpr	a	.8	0	0\n"
 		"gpr	x	.8	1	0\n"
 		"gpr	y	.8	2	0\n"
